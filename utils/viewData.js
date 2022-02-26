@@ -12,8 +12,10 @@ const viewAllDepartments = (db)=> {
         if(err){
             console.log("Error: ",err.message);
         }
-        console.log("");
-        console.table(rows);
+        else{
+            console.clear();
+            console.table(rows);   
+        }
     })
 }
 
@@ -31,8 +33,11 @@ const viewAllRoles = (db)=>{
         if(err){
             console.log("Error: ",err.message);
         }
-        console.log("");
-        console.table(rows);
+        else{
+            console.clear();
+            console.table(rows);
+        }
+        
         
     });    
 }
@@ -58,8 +63,11 @@ const viewAllEmployees = (db)=>{
         if(err){
             console.log("Error: ",err.message);
         }
-        console.log("");
-        console.table(rows);
+        else{
+            console.clear();
+            console.table(rows);
+        }
+       
     })
 }
 

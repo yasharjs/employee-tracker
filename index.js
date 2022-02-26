@@ -1,7 +1,7 @@
 const mysql = require('mysql2');
 const inquirer = require('inquirer');
 const {viewAllDepartments,viewAllRoles,viewAllEmployees} = require('./utils/viewData');
-const {addDepartment} = require('./utils/addData');
+const {addDepartment, addRole, addEmployee} = require('./utils/addData');
 
 const db = mysql.createConnection({
     host:"localhost",
@@ -11,9 +11,8 @@ const db = mysql.createConnection({
 
 })
 
-
 const menuPrompt = ()=>{
-   
+   console.clear();
     return inquirer
     .prompt({
         type:'list',
@@ -32,19 +31,19 @@ const menuPrompt = ()=>{
         ]
     })
     .then(answers => {
+        
         switch(answers.action){
-            case 'View all departments':
+            case 'View all departments':       
                 viewAllDepartments(db)
-                menuPrompt();
-                return;
+                break;
 
             case 'View all roles':
                 viewAllRoles(db)
-                return;
+                break;
 
             case 'View all employees':
                 viewAllEmployees(db)
-                return;
+                break;
 
             case 'Add a department':
                 inquirer
@@ -66,24 +65,65 @@ const menuPrompt = ()=>{
                         type:'input',
                         name: 'name',
                         message:'Enter new role name:'
+                    },
+                    {
+                        type:'number',
+                        name:'salary',
+                        message:'Enter salary for new role:'
+                    },
+                    {
+                        type:'number',
+                        name:'department_id',
+                        message:"Enter department ID for new role:"
                     }
                 ])
+                .then(input =>{
+                    addRole(input,db);
+                    menuPrompt();
+                })
                 return;
 
             case 'Add an employee':
-                addEmployee(db);
+                inquirer
+                .prompt([
+                    {
+                        type:'input',
+                        name:'first_name',
+                        message:"Enter new employee's first name?"
+                    },
+                    {
+                        type:'input',
+                        name:'last_name',
+                        message: "Enter new employee's last_name?"
+                    },
+                    {
+                        type:'input',
+                        name:'role',
+                        message:"Enter new employee's role?"
+
+                    },
+                    {
+                        type:'input',
+                        name:'manager_id',
+                        message:"Enter new employee's manager?"
+                    }
+
+                ])
+                .then(input=>{
+                    addEmployee(input,db);
+                    menuPrompt();
+                })
                 return;
 
             case 'Update employee role':
                 updateEmployeeRole(db);
-                return;
+                break;
 
             default:
                 db.end();
-                console.log("!!BYE!!");
         }
-        console.log('test');
-        menuPrompt();
+    
+       menuPrompt();
     })
 }
 

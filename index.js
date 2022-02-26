@@ -12,7 +12,8 @@ const db = mysql.createConnection({
 })
 
 const menuPrompt = ()=>{
-   console.clear();
+    console.clear();
+
     return inquirer
     .prompt({
         type:'list',
@@ -31,7 +32,6 @@ const menuPrompt = ()=>{
         ]
     })
     .then(answers => {
-        
         switch(answers.action){
             case 'View all departments':       
                 viewAllDepartments(db)
@@ -100,7 +100,6 @@ const menuPrompt = ()=>{
                         type:'input',
                         name:'role',
                         message:"Enter new employee's role?"
-
                     },
                     {
                         type:'input',
@@ -116,13 +115,69 @@ const menuPrompt = ()=>{
                 return;
 
             case 'Update employee role':
-                updateEmployeeRole(db);
-                break;
+                const sql = `
+                SELECT employee.first_name, employee.last_name, employee.id 
+                FROM employee
+                `;
+                db.query(sql,(err,rows)=>{
+                    if(err){
+                        console.clear();
+                        console.log("Error: ",err.message);
+                    }
+                    else{
+                        // create a list of employee names to add to the prompt
+                        const options = rows.map((item)=>{
+                            return Object.values(item).join(" ");
+                        })
+            
+                        inquirer
+                        .prompt(
+                         {
+                        type:'list',
+                        name:'employee',
+                        message:'Choose an employee',
+                        choices: options
+                        }
+                        )
+                        .then(answer=>{
+                            const id = answer.employee.split(" ")[2];
+    
+                            inquirer
+                            .prompt({
+                                type:'input',
+                                name:'role',
+                                message:"Enter the employee's new role ID:"
+                            })
+                            .then(answer=>{
+                                const newId = answer.role;
+                                const sql = `
+                                UPDATE employee
+                                SET roles_id = ?
+                                WHERE id = ?`;
 
+                                db.query(sql,[newId,id],(err)=>{
+                                    if(err){
+                                        console.clear()
+                                        console.log("Error: ",err.message);
+                                    }
+                                    viewAllEmployees(db);
+                                    menuPrompt();
+                                })
+                            })
+                            
+                        })
+                    }
+                  
+                })
+                return;
+            
             default:
                 db.end();
+                console.clear();
+                console.log("Thanks for using employee-tracker!");
+
+                return;
         }
-    
        menuPrompt();
     })
 }

@@ -7,6 +7,7 @@ const addDepartment = (input, db) =>{
         if (err){
             console.clear();
             console.log("Error: ",err.message);
+            console.log("Use arrow keys to choose an option");
             return;
         }
         else{   

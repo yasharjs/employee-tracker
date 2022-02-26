@@ -84,6 +84,16 @@ const menuPrompt = ()=>{
                 return;
 
             case 'Add an employee':
+                const mysql = `SELECT roles.id,roles.title FROM roles ORDER BY id`;
+                
+                db.query(mysql,(err,rows)=>{
+                    if (err){
+                        console.log("WHOOOOPS");
+                    }
+                    const options = rows.map((item)=>{
+                        return Object.values(item).join(" ");
+                    });
+
                 inquirer
                 .prompt([
                     {
@@ -97,22 +107,41 @@ const menuPrompt = ()=>{
                         message: "Enter new employee's last_name?"
                     },
                     {
-                        type:'input',
+                        type:'list',
                         name:'role',
-                        message:"Enter new employee's role?"
+                        message:'Select a role to assign to the new employee',
+                        choices:options
                     },
-                    {
-                        type:'input',
-                        name:'manager_id',
-                        message:"Enter new employee's manager?"
-                    }
-
                 ])
-                .then(input=>{
-                    addEmployee(input,db);
-                    menuPrompt();
+                .then(answer=>{
+                    const sql = `SELECT  employee.id, employee.first_name, employee.last_name FROM employee ORDER BY id`
+
+                    db.query(sql,(err,rows)=>{
+                        if(err){
+                            console.clear();
+                            console.log("Error: ",err.message);
+                        }
+                        const managers = rows.map((item)=>{
+                            return Object.values(item).join(" ");
+                        });
+                    
+
+                        inquirer
+                        .prompt({
+                            type:'list',
+                            name:'managers',
+                            message:'Choose a manager for the new employee:',
+                            choices: managers,
+                        })
+                        .then(manager=>{
+                            addEmployee(answer,manager,db);
+                            menuPrompt();
+                        })
+                    })
                 })
-                return;
+            })
+               return;
+            
 
             case 'Update employee role':
                 const sql = `

@@ -34,7 +34,7 @@ const addRole = (input, db)=>{
     })
 }
 
-const addEmployee = (input,db)=>{
+const addEmployee = (info,manager,db)=>{
 
     const sql = `
     INSERT INTO employee(
@@ -43,8 +43,10 @@ const addEmployee = (input,db)=>{
       roles_id,
       manager_id)
     VALUES (?,?,?,?)`;
-
-    const params = [input.first_name,input.last_name,input.role,input.manager_id];
+    const employeeRole = info.role.split(" ")[0];
+    const managerId = manager.managers.split(" ")[0];
+    const params = [info.first_name,info.last_name,employeeRole,managerId];
+    // console.log(params);
 
     db.query(sql,params,(err,rows)=>{
         if(err){

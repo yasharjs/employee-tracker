@@ -47,7 +47,6 @@ const addEmployee = (info,manager,db)=>{
     const managerId = manager.managers.split(" ")[0];
     const params = [info.first_name,info.last_name,employeeRole,managerId];
     // console.log(params);
-
     db.query(sql,params,(err,rows)=>{
         if(err){
             console.clear();

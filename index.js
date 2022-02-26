@@ -10,6 +10,25 @@ const db = mysql.createConnection({
     database:"employee_tracker"
 
 })
+// validate input from prompts
+const validateInput = (string) => {
+    if (string) {
+       return true;
+    } else {
+       console.log("An answer is required!");
+       return false;
+    }
+ };
+
+ // validate number input from prompts
+const validateNumber = (input) => {
+    if (!isNaN(input) && input) {
+       return true;
+    } else {
+       console.log("Answer must be a number!");
+       return false;
+    }
+ };
 
 const menuPrompt = ()=>{
     console.clear();
@@ -51,6 +70,7 @@ const menuPrompt = ()=>{
                     type:'input',
                     name: 'name',
                     message:'Enter department name:',
+                    validate :promptInput => validateInput(promptInput)
                 })
                 .then(input => {
                     addDepartment(input.name,db);
@@ -64,17 +84,21 @@ const menuPrompt = ()=>{
                     {
                         type:'input',
                         name: 'name',
-                        message:'Enter new role name:'
+                        message:'Enter new role name:',
+                        validate :promptInput => validateInput(promptInput)
                     },
                     {
-                        type:'number',
+                        type:'input',
                         name:'salary',
-                        message:'Enter salary for new role:'
+                        message:'Enter salary for new role:',
+                        validate: promptInput => validateNumber(promptInput)
+
                     },
                     {
-                        type:'number',
+                        type:'input',
                         name:'department_id',
-                        message:"Enter department ID for new role:"
+                        message:"Enter department ID for new role:",
+                        validate: promptInput => validateNumber(promptInput)
                     }
                 ])
                 .then(input =>{
@@ -99,12 +123,14 @@ const menuPrompt = ()=>{
                     {
                         type:'input',
                         name:'first_name',
-                        message:"Enter new employee's first name?"
+                        message:"Enter new employee's first name?",
+                        validate :promptInput => validateInput(promptInput)
                     },
                     {
                         type:'input',
                         name:'last_name',
-                        message: "Enter new employee's last_name?"
+                        message: "Enter new employee's last_name?",
+                        validate :promptInput => validateInput(promptInput)
                     },
                     {
                         type:'list',
@@ -142,7 +168,6 @@ const menuPrompt = ()=>{
             })
                return;
             
-
             case 'Update employee role':
                 const sql = `
                 SELECT employee.first_name, employee.last_name, employee.id 
@@ -175,7 +200,8 @@ const menuPrompt = ()=>{
                             .prompt({
                                 type:'input',
                                 name:'role',
-                                message:"Enter the employee's new role ID:"
+                                message:"Enter the employee's new role ID:",
+                                validate :promptInput => validateNumber(promptInput)
                             })
                             .then(answer=>{
                                 const newId = answer.role;

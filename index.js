@@ -1,4 +1,7 @@
 const mysql = require('mysql2');
+const inquirer = require('inquirer');
+const {viewAllDepartments,viewAllRoles,viewAllEmployees} = require('./utils/viewData');
+const {addDepartment} = require('./utils/addData');
 
 const db = mysql.createConnection({
     host:"localhost",
@@ -8,14 +11,80 @@ const db = mysql.createConnection({
 
 })
 
-db.query(`SELECT employee.*, roles.title AS role
-FROM employee
-LEFT JOIN roles ON employee.roles_id = roles.id
-RIGHT JOIN department ON roles.department_id = department.id`,(err,rows)=>{
-    if(err){
-        console.log("Error!!",err.message);
-        return;
-    } else {
-        console.log(rows);
-    }
-})
+
+const menuPrompt = ()=>{
+   
+    return inquirer
+    .prompt({
+        type:'list',
+        name:'action',
+        message:"Please choose an option:",
+        pageSize:8,
+        choices : [
+            'View all departments',
+            'View all roles',
+            'View all employees',
+            'Add a department',
+            'Add an employee',
+            'Add a role',
+            'Update employee role',
+            'Exit'
+        ]
+    })
+    .then(answers => {
+        switch(answers.action){
+            case 'View all departments':
+                viewAllDepartments(db)
+                menuPrompt();
+                return;
+
+            case 'View all roles':
+                viewAllRoles(db)
+                return;
+
+            case 'View all employees':
+                viewAllEmployees(db)
+                return;
+
+            case 'Add a department':
+                inquirer
+                .prompt({
+                    type:'input',
+                    name: 'name',
+                    message:'Enter department name:',
+                })
+                .then(input => {
+                    addDepartment(input.name,db);
+                    menuPrompt();
+                })
+                return;
+
+            case 'Add a role':
+                inquirer
+                .prompt([
+                    {
+                        type:'input',
+                        name: 'name',
+                        message:'Enter new role name:'
+                    }
+                ])
+                return;
+
+            case 'Add an employee':
+                addEmployee(db);
+                return;
+
+            case 'Update employee role':
+                updateEmployeeRole(db);
+                return;
+
+            default:
+                db.end();
+                console.log("!!BYE!!");
+        }
+        console.log('test');
+        menuPrompt();
+    })
+}
+
+menuPrompt();

@@ -1,5 +1,5 @@
 INSERT INTO department (name)
-VALUES   ("Sales"),
+VALUES ("Sales"),
    ("Engineering"),
    ("Finance"),
    ("Legal");
@@ -25,10 +25,10 @@ INSERT INTO
    )
 VALUES
    ("Sydney", "Frost", 1, NULL),
-   ("Tobias", "Blackwell", 3, NULL),
+   ("Tobias", "Blackwell", 1, NULL),
    ("Gabija", "Burrows", 6, NULL),
    ("Merryn", "Hastings", 9, NULL),
-   ("Gideon", "Fitzpatrick", 2, 1),
+   ("Gideon", "Fitzpatrick", 1, 1),
    ("Saskia", "Bowes", 4, 2),
    ("Krista", "Woolley", 5, 2),
    ("Anderson", "Greenwood", 7, 3),

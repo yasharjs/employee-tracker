@@ -69,7 +69,7 @@ const menuPrompt = ()=>{
                 .prompt({
                     type:'input',
                     name: 'name',
-                    message:'Enter department name:',
+                    message:'Enter new department name:',
                     validate :promptInput => validateInput(promptInput)
                 })
                 .then(input => {
@@ -150,8 +150,8 @@ const menuPrompt = ()=>{
                         const managers = rows.map((item)=>{
                             return Object.values(item).join(" ");
                         });
-                    
-
+                        managers.push('0 No Manager');
+                       
                         inquirer
                         .prompt({
                             type:'list',

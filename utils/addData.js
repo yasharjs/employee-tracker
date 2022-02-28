@@ -44,7 +44,13 @@ const addEmployee = (info,manager,db)=>{
       manager_id)
     VALUES (?,?,?,?)`;
     const employeeRole = info.role.split(" ")[0];
-    const managerId = manager.managers.split(" ")[0];
+    let managerId = manager.managers.split(" ")[0];
+
+    if(managerId === '0'){
+        managerId = null;
+    }
+    
+
     const params = [info.first_name,info.last_name,employeeRole,managerId];
     // console.log(params);
     db.query(sql,params,(err,rows)=>{

@@ -3,10 +3,11 @@ const inquirer = require('inquirer');
 const {viewAllDepartments,viewAllRoles,viewAllEmployees} = require('./utils/viewData');
 const {addDepartment, addRole, addEmployee} = require('./utils/addData');
 
+
 const db = mysql.createConnection({
     host:"localhost",
     user: "root",
-    password:"Cash1234",
+    password: require('./db_password/password'), //CHANGE TO YOUR OWN PASSWORD
     database:"employee_tracker"
 
 })

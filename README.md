@@ -25,7 +25,7 @@ npm install
 
 # Usage
 
-In the terminal, once you have navigated to the application's directory and installed the node package manager, run the following command:
+In the terminal, once you have navigated to the application's directory and installed the node package manager.run the following commands:
 ```
 node index.js
 ```

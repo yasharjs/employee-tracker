@@ -25,7 +25,15 @@ npm install
 
 # Usage
 
-In the terminal, once you have navigated to the application's directory and installed the node package manager.run the following commands:
+In the terminal, once you have navigated to the application's directory and installed the node package manager, go to the index.js file and update the SQL database password. Go to your MySQL shell and populate the database by running the following commands:
+```
+source db/db.sql;
+source db/schema.sql;
+source db/seeds.sql;
+quit;
+```
+
+Then run the following command to start the application:
 ```
 node index.js
 ```

@@ -113,7 +113,7 @@ const menuPrompt = ()=>{
                 
                 db.query(mysql,(err,rows)=>{
                     if (err){
-                        console.log("WHOOOOPS");
+                        console.log(er.message);
                     }
                     const options = rows.map((item)=>{
                         return Object.values(item).join(" ");
@@ -171,8 +171,8 @@ const menuPrompt = ()=>{
             
             case 'Update employee role':
                 const sql = `
-                SELECT employee.first_name, employee.last_name, employee.id 
-                FROM employee
+                SELECT  employee.id , employee.first_name, employee.last_name
+                FROM employee ORDER BY id
                 `;
                 db.query(sql,(err,rows)=>{
                     if(err){
@@ -195,8 +195,7 @@ const menuPrompt = ()=>{
                         }
                         )
                         .then(answer=>{
-                            const id = answer.employee.split(" ")[2];
-    
+                            const id = answer.employee.split(" ")[0];
                             inquirer
                             .prompt({
                                 type:'input',

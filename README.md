@@ -14,7 +14,7 @@
 - [License](#License)
 
 # Installation
-[Instructional Video!](https://)
+[Instructional Video!](https://drive.google.com/file/d/1Soa38eBTIRu68_kKxbOplY2WUoKagH3V/view)
 
 To use this application you must have Node.js and SQL installed on your system. Visit [node installation](https://nodejs.org/en/download/) and [SQL installation](https://dev.mysql.com/downloads/mysql/) to download and install.
 
